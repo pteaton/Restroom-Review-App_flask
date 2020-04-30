@@ -6,6 +6,7 @@ from flask_login import current_user, login_required
 reviews = Blueprint('reviews', 'reviews')
 
 @reviews.route('/', methods=['GET'])
+@login_required
 def review_index():
 	result = models.Review.select()
 	print('')
@@ -15,7 +16,7 @@ def review_index():
 
 @reviews.route('/', methods=['POST'])
 def create_review():
-	'''creates a review in databse '''
+	'''creates a review in database '''
 	payload = request.get_json()
 	print(payload)
 
