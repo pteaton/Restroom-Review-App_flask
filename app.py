@@ -8,7 +8,7 @@ PORT=8000
 
 app = Flask(__name__)
 
-app.register_blueprint(cars, urlprefix='/api/v1/reviews')
+app.register_blueprint(reviews, urlprefix='/api/v1/reviews')
 
 
 # print hellow world, test
