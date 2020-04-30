@@ -15,7 +15,7 @@ class User(Model):
 
 class Review(Model):
 	title = CharField()
-	date_posted = datetime()
+	date_posted = DateTimeField(default=datetime.datetime.now)
 	review = CharField()
 	posted_by = ForeignKeyField(User, backref='reviews')
 	location = CharField()

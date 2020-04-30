@@ -1,11 +1,14 @@
 from flask import Flask, jsonify
-import models
+import models 
+from resources.reviews import reviews
 
 DEBUG=True
 PORT=8000
 
 
 app = Flask(__name__)
+
+app.register_blueprint(cars, urlprefix='/api/v1/reviews')
 
 
 # print hellow world, test
