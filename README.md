@@ -1,6 +1,4 @@
-Project #3: Restroom Review App 
-
-## Review and read about various bathrooms/restrooms by you!
+## Project #3: Restroom Review App
 
 Author: Pat Eaton
 
