@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 
 DEBUG=True
@@ -9,9 +9,9 @@ app = Flask(__name__)
 
 
 # print hellow world, test
-@app.route('/')
-def hello():
-	return 'Hello, world!'
+@app.route('/test_json')
+def get_json():
+	return jsonify(['review that', 'review this', 'review it all'])
 
 if __name__== '__main__':
 	app.run(debug=DEBUG, port=PORT)
