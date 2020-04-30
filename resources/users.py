@@ -88,6 +88,7 @@ def login():
 			status=401
 		), 401
 
+
 @users.route('/logout', methods=['GET'])
 def logout():
 	logout_user()

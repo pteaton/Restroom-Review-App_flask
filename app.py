@@ -44,7 +44,7 @@ CORS(users, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(reviews, urlprefix='/api/v1/reviews')
 app.register_blueprint(users, url_prefix='/api/v1/users')
 
-# print hellow world, test
+# jsonify test
 @app.route('/test_json')
 def get_json():
 	return jsonify(['review that', 'review this', 'review it all'])
