@@ -79,7 +79,7 @@ def delete_review(id):
 				data={
 					'error': '403 Forbidden'
 				},
-				message="User name doesn't match review id. OP is the only one that can delete",
+				message="Username doesn't match review id. Only OP can delete",
 				status=403
 			), 403
 
@@ -93,8 +93,44 @@ def delete_review(id):
 		), 404
 
 
+# update review route
+@reviews.route('/<id>', methods=['PUT'])
+@login_required
+def update_review(id):
 
+	payload = request.get_json()
 
+	dog_to_update = models.Review.get_by_id(id)
+
+	if dog_to_update.posted_by.id = current_user.id:
+
+		if 'title' in payload:
+			review_to_update.title = payload['title']
+		if 'review' in payload:
+			review_to_update.review = payload['review']
+		if 'location' in payload:
+			review_to_update.location = payload['location']
+
+		review_to_update.save()
+
+		updated_review_dict = model_to_dict(review_to_update)
+
+		updated_review_dict['posted_by'].pop('password')
+
+		return jsonify(
+			data=updated_review_dict,
+			message=f"Successfully updated your review with id {id}",
+			status=200
+		), 200
+
+	else:
+		return jsonify(
+			data={
+				'error': '403 Forbidden'
+			},
+			message="Username doesn't match review id. Only OP can update",
+			status=403
+		), 403
 
 
 
