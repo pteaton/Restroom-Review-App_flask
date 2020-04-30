@@ -9,8 +9,8 @@ class User(Model):
 	email=CharField(unique=True)
 	password=CharField(unique=True)
 
-class Meta:
-	database = DATABASE
+	class Meta:
+		database = DATABASE
 
 
 class Review(Model):
@@ -20,8 +20,8 @@ class Review(Model):
 	posted_by = ForeignKeyField(User, backref='reviews')
 	location = CharField()
 
-class Meta:
-	database = DATABASE
+	class Meta:
+		database = DATABASE
 
 def initialize():
 	DATABASE.connect()
