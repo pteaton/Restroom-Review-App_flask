@@ -7,11 +7,11 @@ Author: Pat Eaton
 App to review a restroom experience based on cleanliness, toilet paper quality & the overall aesthetic of the room
 
 ### Data Tables & Models
-![alt text](https://i.imgur.com/Wl5Ola0.png)
+![alt text](https://i.imgur.com/rT9VEMV.png)
 
 
 ### HTTP Routes
-![alt text](https://i.imgur.com/5hlDpOj.png)
+![alt text](https://i.imgur.com/R4HvgtR.png)
 
 ### Stretch Goals
 
