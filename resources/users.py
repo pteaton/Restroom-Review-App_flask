@@ -9,7 +9,7 @@ users = Blueprint('users', 'users')
 @users.route('/', methods=['GET'])
 def text_user_resource():
 	return "user resource working"
-
+# register
 @users.route('/register', methods=['POST'])
 def register():
 	payload = request.get_json()
@@ -48,7 +48,7 @@ def register():
 			status=201
 		), 201
 
-
+# login
 @users.route('/login', methods=['POST'])
 def login():
 	payload = request.get_json()
@@ -84,11 +84,11 @@ def login():
 		print('username is no good here')
 		return jsonify(
 			data={},
-			message="Email or passowrd is incorrect",
+			message="Email or password is incorrect",
 			status=401
 		), 401
 
-
+# logout
 @users.route('/logout', methods=['GET'])
 def logout():
 	logout_user()
@@ -98,6 +98,29 @@ def logout():
 		status=200
 	), 200
 
+# destroy
+@users.route('/<id>', methods=['DELETE'])
+@login_required
+def delete_account(id):
+	user_to_delete = models.User.get_by_id(id)
+
+	if current_user.id == user_to_delete.id:
+		user_to_delete.delete_instance()
+
+		return jsonify(
+			data={},
+			message="Your account has been successfully deleted",
+			status=200
+		), 200
+
+	else:
+		return jsonify(
+			data={},
+			message="This account does not belong to you",
+			status=403
+		), 403
+
+	return "delete route is here"
 
 
 
