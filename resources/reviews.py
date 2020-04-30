@@ -102,7 +102,7 @@ def update_review(id):
 
 	dog_to_update = models.Review.get_by_id(id)
 
-	if dog_to_update.posted_by.id = current_user.id:
+	if dog_to_update.posted_by.id == current_user.id:
 
 		if 'title' in payload:
 			review_to_update.title = payload['title']
