@@ -132,7 +132,33 @@ def update_review(id):
 			status=403
 		), 403
 
+@reviews.route('/<id>', methods=['GET'])
+def show_review(id):
+	review = models.Review.get_by_id(id)
 
+	if not current_user.is_authenticated:
+		return jsonify(
+			data={
+				'title': review.title,
+				'review': review.review,
+				'location': review.location
+			},
+			message="Registered users can see more info about this review",
+			status=200
+		), 200
+
+	else: 
+		review_dict = model_to_dict(review)
+		review_dict['posted_by'].pop('password')
+
+		if review.posted_by.id != current_user.id:
+			review_dict.pop('date_posted')
+
+		return jsonify(
+			data=review_dict,
+			message=f"Found review with id {id}",
+			status=200
+		), 200
 
 
 
