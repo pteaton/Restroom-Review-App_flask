@@ -9,6 +9,7 @@ users = Blueprint('users', 'users')
 @users.route('/', methods=['GET'])
 def text_user_resource():
 	return "user resource working"
+
 # register
 @users.route('/register', methods=['POST'])
 def register():

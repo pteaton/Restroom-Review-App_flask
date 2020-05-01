@@ -11,7 +11,7 @@ PORT=8000
 app = Flask(__name__)
 
 # Login/Authentication
-app.secret_key = "This string is a secret."
+app.secret_key = "This string is the secret string."
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -32,7 +32,7 @@ def unauthorized():
 		data={
 		'error': 'User is not logged in'
 		},
-		message="You must be logged in to access this resource",
+		message="You must be logged in to access this resource.",
 		status=401
 	), 401
 
@@ -40,7 +40,7 @@ def unauthorized():
 CORS(reviews, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(users, origins=['http://localhost:3000'], supports_credentials=True)
 
-
+# Blueprint
 app.register_blueprint(reviews, urlprefix='/api/v1/reviews')
 app.register_blueprint(users, url_prefix='/api/v1/users')
 
