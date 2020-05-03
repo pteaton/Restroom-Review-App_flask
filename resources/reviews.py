@@ -12,7 +12,7 @@ reviews = Blueprint('reviews', 'reviews')
 @login_required
 def reviews_index():
 	
-	current_user_review_dicts = [model_to_dict(dog) for dog in current_user.dogs]
+	current_user_review_dicts = [model_to_dict(review) for review in current_user.reviews]
 	
 	for review_dict in current_user_review_dicts:
 		review_dict['posted_by'].pop('password')
@@ -28,9 +28,9 @@ def reviews_index():
 
 
 # route to create review
-@reviews.route('/', methods=['POST'])
+@reviews.route('/add', methods=['POST'])
 @login_required
-def create_dog():
+def create_review():
 	
 	payload = request.get_json()
 
@@ -46,13 +46,84 @@ def create_dog():
 
 	print(review_dict)
 
-	dog_dict['owner'].pop('password')
+	review_dict['owner'].pop('password')
 
 	return jsonify(
 		data=review_dict,
 		message="Successfully created a review!!",
 		status=201
 	), 201
+
+
+
+
+# update review route
+@reviews.route('/<id>', methods=['PUT'])
+@login_required
+def update_review(id):
+
+	payload = request.get_json()
+
+	review_to_update = models.Review.get_by_id(id)
+
+	if review_to_update.posted_by.id == current_user.id:
+
+		if 'title' in payload:
+			review_to_update.title = payload['title']
+		if 'review' in payload:
+			review_to_update.review = payload['review']
+		if 'location' in payload:
+			review_to_update.location = payload['location']
+
+		review_to_update.save()
+
+		updated_review_dict = model_to_dict(review_to_update)
+
+		updated_review_dict['posted_by'].pop('password')
+
+		return jsonify(
+			data=updated_review_dict,
+			message=f"Successfully updated your review with id {id}",
+			status=200
+		), 200
+
+	else:
+		return jsonify(
+			data={
+				'error': '403 Forbidden'
+			},
+			message="Username doesn't match review id. Only OP can update",
+			status=403
+		), 403
+
+# show reviews
+@reviews.route('/<id>', methods=['GET'])
+def show_review(id):
+	review = models.Review.get_by_id(id)
+
+	if not current_user.is_authenticated:
+		return jsonify(
+			data={
+				'title': review.title,
+				'review': review.review,
+				'location': review.location
+			},
+			message="Registered users can see more info about this review",
+			status=200
+		), 200
+
+	else: 
+		review_dict = model_to_dict(review)
+		review_dict['posted_by'].pop('password')
+
+		if review.posted_by.id != current_user.id:
+			review_dict.pop('date_posted')
+
+		return jsonify(
+			data=review_dict,
+			message=f"Found review with id {id}",
+			status=200
+		), 200
 
 
 # route to destroy review 
@@ -91,87 +162,6 @@ def delete_review(id):
 			message="Sorry, but there is no record of a review with this ID here",
 			status=404
 		), 404
-
-
-# update review route
-@reviews.route('/<id>', methods=['PUT'])
-@login_required
-def update_review(id):
-
-	payload = request.get_json()
-
-	dog_to_update = models.Review.get_by_id(id)
-
-	if dog_to_update.posted_by.id == current_user.id:
-
-		if 'title' in payload:
-			review_to_update.title = payload['title']
-		if 'review' in payload:
-			review_to_update.review = payload['review']
-		if 'location' in payload:
-			review_to_update.location = payload['location']
-
-		review_to_update.save()
-
-		updated_review_dict = model_to_dict(review_to_update)
-
-		updated_review_dict['posted_by'].pop('password')
-
-		return jsonify(
-			data=updated_review_dict,
-			message=f"Successfully updated your review with id {id}",
-			status=200
-		), 200
-
-	else:
-		return jsonify(
-			data={
-				'error': '403 Forbidden'
-			},
-			message="Username doesn't match review id. Only OP can update",
-			status=403
-		), 403
-
-@reviews.route('/<id>', methods=['GET'])
-def show_review(id):
-	review = models.Review.get_by_id(id)
-
-	if not current_user.is_authenticated:
-		return jsonify(
-			data={
-				'title': review.title,
-				'review': review.review,
-				'location': review.location
-			},
-			message="Registered users can see more info about this review",
-			status=200
-		), 200
-
-	else: 
-		review_dict = model_to_dict(review)
-		review_dict['posted_by'].pop('password')
-
-		if review.posted_by.id != current_user.id:
-			review_dict.pop('date_posted')
-
-		return jsonify(
-			data=review_dict,
-			message=f"Found review with id {id}",
-			status=200
-		), 200
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

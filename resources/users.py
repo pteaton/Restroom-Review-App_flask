@@ -2,7 +2,7 @@ import models
 from flask import Blueprint, request, jsonify
 from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.shortcuts import model_to_dict
-from flask_login import login_user, current_user, logout_user 
+from flask_login import login_user, current_user, logout_user, login_required
 
 users = Blueprint('users', 'users')
 
@@ -70,8 +70,8 @@ def login():
 			return jsonify(
 				data=user_dict,
 				message=f"Successfully logged in {user_dict['email']}",
-				status=200
-			), 200
+				status=201
+			), 201
 
 		else:
 			print('pw is no good here')
