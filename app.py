@@ -41,7 +41,7 @@ CORS(reviews, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(users, origins=['http://localhost:3000'], supports_credentials=True)
 
 # Blueprint
-app.register_blueprint(reviews, urlprefix='/api/v1/reviews')
+app.register_blueprint(reviews, url_prefix='/api/v1/reviews')
 app.register_blueprint(users, url_prefix='/api/v1/users')
 
 # jsonify test

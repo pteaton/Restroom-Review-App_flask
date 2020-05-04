@@ -1,4 +1,5 @@
 import models
+import datetime
 from flask import Blueprint, request, jsonify
 from playhouse.shortcuts import model_to_dict
 from flask_login import current_user, login_required
@@ -7,7 +8,7 @@ reviews = Blueprint('reviews', 'reviews')
 
 
 
-# index for reviews GET /api/v1/reviews
+# index for reviews GET /api/v1/reviews/
 @reviews.route('/', methods=['GET'])
 @login_required
 def reviews_index():
@@ -28,25 +29,25 @@ def reviews_index():
 
 
 # route to create review
-@reviews.route('/add', methods=['POST'])
+@reviews.route('/', methods=['POST'])
 @login_required
 def create_review():
 	
 	payload = request.get_json()
 
 	new_review = models.Review.create(
-		title=payload['name'],
-		date_posted = DateTimeField(default=datetime.datetime.now),
+		title=payload['title'],
+		date_posted = datetime.datetime.now(),
 		posted_by= current_user.id,
 		review=payload['review'],
 		location=payload['location']
 	)
 
-	review.dict = model_to_dict(new_review)
+	review_dict = model_to_dict(new_review)
 
 	print(review_dict)
 
-	review_dict['owner'].pop('password')
+	review_dict['posted_by'].pop('password')
 
 	return jsonify(
 		data=review_dict,
@@ -135,7 +136,7 @@ def delete_review(id):
 
 		review_to_delete = models.Review.get_by_id(id)
 
-		if review_to_delete.owner.id == current_user.id:
+		if review_to_delete.posted_by.id == current_user.id:
 			review_to_delete.delete_instance()
 
 			return jsonify(
@@ -162,30 +163,3 @@ def delete_review(id):
 			message="Sorry, but there is no record of a review with this ID here",
 			status=404
 		), 404
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
