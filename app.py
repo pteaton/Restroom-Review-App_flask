@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+import os
+from flask import Flask, jsonify, g
 from resources.reviews import reviews
 from resources.users import users
 import models 
@@ -44,11 +45,32 @@ CORS(users, origins=['http://localhost:3000'], supports_credentials=True)
 app.register_blueprint(reviews, url_prefix='/api/v1/reviews')
 app.register_blueprint(users, url_prefix='/api/v1/users')
 
+# Deployment
+@app.before_request
+def before_request():
+	print("you should see this before each request")
+	g.db = models.DATABASE
+	g.db.connect()
+
+@app.after_request
+def after_request(response):
+	print("you hsould see this after each request")
+	g.db.close()
+	return response 
+
+
+
 # jsonify test
 @app.route('/test_json')
 def get_json():
 	return jsonify(['review that', 'review this', 'review it all'])
 
+# Heroku initialization
+if 'ON_HEROKU' in os.environ:
+	print('\non heroku!')
+	models.initialize()
+
+# Run App
 if __name__== '__main__':
 	models.initialize()
 	app.run(debug=DEBUG, port=PORT)
