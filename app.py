@@ -38,8 +38,8 @@ def unauthorized():
 	), 401
 
 # CORS
-CORS(reviews, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(users, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(reviews, origins=['http://localhost:3000', 'https://p3-restroom-review-app.herokuapp.com'], supports_credentials=True)
+CORS(users, origins=['http://localhost:3000','https://p3-restroom-review-app.herokuapp.com'], supports_credentials=True)
 
 # Blueprint
 app.register_blueprint(reviews, url_prefix='/api/v1/reviews')
