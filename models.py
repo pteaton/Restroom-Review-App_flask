@@ -31,8 +31,6 @@ class Review(Model):
 
 def initialize():
 	DATABASE.connect()
-
-DATABASE.create_tables([User, Review], safe=True)
-print("DB connected and created tables")
-
-DATABASE.close()
+	DATABASE.create_tables([User, Review], safe=True)
+	print("DB connected and created tables")
+	DATABASE.close()
