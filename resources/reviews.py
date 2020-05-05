@@ -26,6 +26,24 @@ def reviews_index():
 		'status': 200
 	}), 200
 
+# GET /reviews/all -- shows all reviews
+@reviews.route('/all')
+def get_all_reviews():
+	reviews = models.Review.select()
+
+	review_dicts = [model_to_dict(review) for review in reviews]
+
+	for review_dict in review_dicts:
+		review_dict['posted_by'].pop('password')
+		if not current_user.is_authenticated:
+			review_dict.pop('posted_by')
+
+	return jsonify({
+		'data': review_dicts,
+		'message': f"Successfully found {len(review_dicts)} reviews",
+		'status': 200
+
+	}), 200
 
 
 # route to create review
