@@ -24,7 +24,7 @@ def register():
 
 		return jsonify(
 			data={},
-			message=f"A user with the email {payload['email']} already exists",
+			message=f"Sorry bud, a user with the email {payload['email']} already exists",
 			status=401
 		), 401
 
@@ -42,6 +42,10 @@ def register():
 
 		created_user_dict = model_to_dict(created_user)
 		print(created_user_dict)
+
+		print(type(created_user_dict['password']))
+
+		created_user_dict.pop('password')
 
 		return jsonify(
 			data=created_user_dict,
