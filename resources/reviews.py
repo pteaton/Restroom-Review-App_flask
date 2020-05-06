@@ -46,7 +46,7 @@ def get_all_reviews():
 	}), 200
 
 
-# route to create review
+# route to create review POST /reviews/
 @reviews.route('/', methods=['POST'])
 @login_required
 def create_review():
@@ -82,8 +82,9 @@ def create_review():
 def update_review(id):
 
 	payload = request.get_json()
-
 	review_to_update = models.Review.get_by_id(id)
+	print(type(review_to_update))
+	print(review_to_update)
 
 	if review_to_update.posted_by.id == current_user.id:
 
@@ -95,9 +96,7 @@ def update_review(id):
 			review_to_update.location = payload['location']
 
 		review_to_update.save()
-
 		updated_review_dict = model_to_dict(review_to_update)
-
 		updated_review_dict['posted_by'].pop('password')
 
 		return jsonify(
